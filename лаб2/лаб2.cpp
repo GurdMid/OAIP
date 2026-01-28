@@ -1,20 +1,105 @@
-﻿// лаб2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+using namespace std;
 
-#include <iostream>
-
-int main()
+struct Stack
 {
-    std::cout << "Hello World!\n";
+	double info;
+	Stack *next;
+} *start, *t;
+
+Stack* push(Stack*, int);
+void View(Stack*);
+void Del_All(Stack**);
+
+Stack* push(Stack* p, int in)
+{
+	Stack* t = new Stack;			// Захватываем память для элемента
+	t->info = in;			// Формируем информационную часть
+	t->next = p;			// Формируем адресную часть
+	return t;
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+void View(Stack* p) {
+	Stack* t = p;
+	while (t != NULL) {
+		// Вывод на экран информационной части, например,
+		cout <<  t -> info << endl;
+		t = t->next;
+	}
+}
+void Del_All(Stack** p) {
+	Stack* t;
+	while (*p != NULL) {
+		t = *p;
+		*p = (*p)->next;
+		delete t;
+	}
+}
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+void Menu()
+{
+		cout << "1 - cоздать" << endl << "2 - добавить" << endl << "3 - удалить" << endl << "иначе - выход" << endl;
+}
+double task(Stack* p)
+{
+    Stack* t = p;
+    double sum = 0, count = 0;
+
+    while (t != NULL)
+    {
+        sum += t->info;
+        count++;
+        t = t->next;
+    }
+    double average = sum / count;
+    return average;
+}
+void taskview(Stack** p)
+{
+    double average = task(*p);
+    *p = push(*p, average);
+
+    cout << "Стек после добавления среднего арифмитического: " << endl;
+    View(*p);
+}
+int main()
+{
+    setlocale(LC_ALL, "RU");
+    int k, n, in;
+
+    do {
+        Menu();
+        cin >> k;
+
+        switch (k)
+        {
+        case 1:  
+            cout << "Количество элементов: ";
+            cin >> n;
+            cout << "Введите " << n << " элементов: ";
+            for (int i = 0; i < n; i++)
+            {
+                cin >> in;
+                start = push(start, in);
+            }
+            View(start);
+            break;
+        case 2:  
+            cout << "Введите элемент для добавления: ";
+            cin >> in;
+            start = push(start, in); 
+            View(start);
+            break;
+        case 3: 
+            Del_All(&start);
+            cout << "Стек удален" << endl;
+            break;
+        case 4: taskview(&start);
+        default: 
+            exit(0);
+        }
+        
+    } while (k != 0);
+
+    return 0;
+}
