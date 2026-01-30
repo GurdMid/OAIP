@@ -35,7 +35,19 @@ void Del_All(Stack** p) {
 		delete t;
 	}
 }
-
+void problem(int& a)
+{
+    while (1)
+    {
+        if (!(cin >> a))
+        {
+            cout << "Неверный ввод" << endl;
+            cin.clear();
+            cin.ignore(100, '\n');
+        }
+        else break;
+    }
+}
 void Menu()
 {
 		cout << "1 - cоздать" << endl << "2 - добавить" << endl << "3 - удалить" << endl << "иначе - выход" << endl;
@@ -69,24 +81,23 @@ int main()
 
     do {
         Menu();
-        cin >> k;
-
+        problem(k);
         switch (k)
         {
         case 1:  
             cout << "Количество элементов: ";
-            cin >> n;
+            problem(n);
             cout << "Введите " << n << " элементов: ";
             for (int i = 0; i < n; i++)
             {
-                cin >> in;
+                problem(in);
                 start = push(start, in);
             }
             View(start);
             break;
         case 2:  
             cout << "Введите элемент для добавления: ";
-            cin >> in;
+            problem(in);
             start = push(start, in); 
             View(start);
             break;
