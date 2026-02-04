@@ -33,7 +33,6 @@ struct NumStack {
 
 NumStack* numStack = NULL;
 
-
 NumStack* pushNum(NumStack* p, double val) {
     NumStack* t = new NumStack;
     t->info = val;
@@ -198,3 +197,4 @@ int main()
 
     return 0;
 }
+
