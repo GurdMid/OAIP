@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 using namespace std;
 
 struct Stack
@@ -6,10 +6,6 @@ struct Stack
 	double info;
 	Stack *next;
 } *start, *t;
-
-Stack* push(Stack*, int);
-void View(Stack*);
-void Del_All(Stack**);
 
 Stack* push(Stack* p, int in)
 {
@@ -21,11 +17,13 @@ Stack* push(Stack* p, int in)
 
 void View(Stack* p) {
 	Stack* t = p;
+    cout << '\n';
 	while (t != NULL) {
-		// Вывод на экран информационной части, например,
+		// Вывод на экран информационной части
 		cout <<  t -> info << endl;
 		t = t->next;
 	}
+    cout << '\n';
 }
 void Del_All(Stack** p) {
 	Stack* t;
@@ -34,7 +32,9 @@ void Del_All(Stack** p) {
 		*p = (*p)->next;
 		delete t;
 	}
+    cout << endl << "Стек очищен" << endl << endl;
 }
+
 void problem(int& a)
 {
     while (1)
@@ -48,10 +48,46 @@ void problem(int& a)
         else break;
     }
 }
+
+void Sort_p(Stack** p) {
+    Stack* t = NULL, * t1, * r;
+    if ((*p)->next->next == NULL) return;
+    do {
+        for (t1 = *p; t1->next->next != t; t1 = t1->next)
+            if (t1->next->info > t1->next->next->info)
+            {
+                r = t1->next->next;
+                t1->next->next = r->next;
+                r->next = t1->next;
+                t1->next = r;
+            }
+        t = t1->next;
+    } while ((*p)->next->next != t);
+    cout << endl;
+    View(start);
+}
+void Sort_info(Stack* p) {
+    Stack* t = NULL, * t1;
+    int r;
+    do {
+        for (t1 = p; t1->next != t; t1 = t1->next)
+            if (t1->info > t1->next->info) 
+            {
+                r = t1->info;
+                t1->info = t1->next->info;
+                t1->next->info = r;
+            }
+        t = t1;
+    } while (p->next != t);
+    View(start);
+}
+
 void Menu()
 {
-		cout << "1 - cоздать" << endl << "2 - добавить" << endl << "3 - удалить" << endl << "иначе - выход" << endl;
+		cout << "1 - cоздать" << endl << "2 - добавить" << endl << "3 - удалить" << endl << "4 - Задание" << endl << "5 - Сортировка 1" << endl
+            << "6 - Сортировка 2" << endl << "иначе - выход" << endl;
 }
+
 double task(Stack* p)
 {
     Stack* t = p;
@@ -66,14 +102,16 @@ double task(Stack* p)
     double average = sum / count;
     return average;
 }
+
 void taskview(Stack** p)
 {
     double average = task(*p);
-    *p = push(*p, average);
+    (*p)->info = average;
 
     cout << "Стек после добавления среднего арифмитического: " << endl;
     View(*p);
 }
+
 int main()
 {
     setlocale(LC_ALL, "RU");
@@ -81,7 +119,7 @@ int main()
 
     do {
         Menu();
-        problem(k);
+        cin >> k;
         switch (k)
         {
         case 1:  
@@ -103,14 +141,15 @@ int main()
             break;
         case 3: 
             Del_All(&start);
-            cout << "Стек удален" << endl;
             break;
-        case 4: taskview(&start);
+        case 4: taskview(&start); break;
+        case 5: Sort_p(&start); break;
+        case 6: Sort_info(start); break;
         default: 
-            exit(0);
+            break;
         }
         
     } while (k != 0);
-
+    Del_All(&start);
     return 0;
 }
