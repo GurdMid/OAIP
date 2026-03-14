@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 using namespace std;
 
 struct Spis2 {
@@ -151,6 +151,8 @@ int main()
 		case 7:
 			taskview(&begin, begin, &end); break;
 		default:
+Del_All(&begin);
+			cout << "Список удален" << endl;
 			exit(0);
 		}
 
