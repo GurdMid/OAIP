@@ -2,43 +2,45 @@
 using namespace std;
 
 struct Spis2 {
-	int info;
+	double info;
 	Spis2* prev, * next;
 } *begin, *end;
 
-void Create(Spis2** begin, Spis2** end, int in)
+void Create(Spis2** begin, Spis2** end, double in)
 {
 	Spis2* t = new Spis2;
 	t->info = in;                 
-	t->prev = nullptr;    
-	t->next = nullptr;
+	t->prev = NULL;
+	t->next = NULL;
 	*begin = t;                   
 	*end = t;                   
 }
-void Spisb(Spis2** begin, int in)
+void Spisb(Spis2** begin, double in)
 {
 	Spis2* t = new Spis2;           
 	t->info = in;                   
 	t->prev = NULL;
 	t->next = *begin;   
 
-	if (*begin != nullptr) 
+	if (*begin != NULL)
 		(*begin)->prev = t;    
 	
 	*begin = t;                   
 }
-void Spise(Spis2** end, int in)
+void Spise(Spis2** end, double in)
 {
 	Spis2* t = new Spis2;        
 	t->info = in;                   
 	t->next = NULL;
 	t->prev = *end;   
 
-	if (*end != nullptr) 
+	if (*end != NULL)
 		(*end)->next = t;  
 	*end = t;                       
 }
+
 void Viewb(Spis2* begin) {
+	cout << endl;
 	Spis2* t = begin;
 	while (t != NULL) {
 
@@ -46,7 +48,12 @@ void Viewb(Spis2* begin) {
 		t = t->next;
 	}
 }
+	cout << t->info << endl;
+	recurs(t->next);
+}
+
 void Viewe(Spis2* end) {
+	cout << endl;
 	Spis2* t = end;
 
 	while (t != NULL) {
@@ -63,7 +70,7 @@ void Del_All(Spis2** begin) {
 		delete t;
 	}
 }
-void problem(int& a)
+void problem(double& a)
 {
 	while (1)
 	{
@@ -95,24 +102,33 @@ double task(Spis2* begin)
 	double average = sum / count;
 	return average;
 }
-void taskview(Spis2** p, Spis2* begin, Spis2** end) 
+void taskview(Spis2** begin, Spis2** end) 
 {
-	double average = task(*p);
-	Spise(end,average);  
+	if (*begin == NULL)
+	{
+		cout << "Cписок пуст";
+		return;	
+	}
 
-	Viewb(begin);                     
+	double average = task(*begin);
+	(*begin)->info = average;
+
+	Viewb(*begin);                     
 }
 
 int main()
 {
-	Spis2* begin = nullptr;
-	Spis2* end = nullptr;
+	
+	Spis2* begin = NULL;
+	Spis2* end = NULL;
+	Spis2* t = begin;
     setlocale(LC_ALL, "RU");
-	int k, n, in;
+	double n, in;
+	int k;
 
 	do {
 		Menu();
-		problem(k);
+		cin >> k;
 		switch (k)
 		{
 		case 1:
@@ -149,14 +165,14 @@ int main()
 			cout << "Список удален" << endl;
 			break;
 		case 7:
-			taskview(&begin, begin, &end); break;
+			taskview(&begin, &end); break;
 		default:
-Del_All(&begin);
+			Del_All(&begin);
 			cout << "Список удален" << endl;
 			exit(0);
 		}
 
 	} while (k != 0);
-
+	
     return 0;
 }
