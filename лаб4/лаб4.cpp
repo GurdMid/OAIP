@@ -1,13 +1,21 @@
-#include <iostream>
+﻿#include <iostream>
 using namespace std;
 
 struct Stack {
     char info;
     Stack* next;
-} *begin;
+} *start;
 
+void Del_All(Stack** p) {
+    Stack* t;
+    while (*p != NULL) {
+        t = *p;
+        *p = (*p)->next;
+        delete t;
+    }
+}
 Stack* push(Stack* p, char in)
-{
+{                                      
     Stack* t = new Stack;
     t->info = in;
     t->next = p;
@@ -29,7 +37,7 @@ char top(Stack* p) {
 struct NumStack {
     double info;
     NumStack* next;
-};
+} *start1;
 
 NumStack* numStack = NULL;
 
@@ -45,6 +53,14 @@ NumStack* popNum(NumStack* p) {
     NumStack* t = p->next;
     delete p;
     return t;
+}
+void Del_All2(NumStack** p) {
+    NumStack* t;
+    while (*p != NULL) {
+        t = *p;
+        *p = (*p)->next;
+        delete t;
+    }
 }
 double values[26];
 
@@ -91,7 +107,7 @@ void perevod(char* mass, char* opz)
             st = push(st, in);
         }
 
-        else if (in == '^')  // оператор степени
+        else if (in == '^')
         {
             //вытаскиваем только ^
             while (st != NULL && top(st) == '^')
@@ -161,12 +177,11 @@ double calc(char* opz)
 
 int main()
 {
-    double a, b, c, d, e;
     setlocale(LC_ALL, "RU");
 
     char mass[100];
     char opz[100];
-    bool used[26] = {false}; // какие буквы использованы
+    bool used[26] = {false}; 
 
     cout << "Введите выражение: ";
     cin.getline(mass, 100);
@@ -174,17 +189,18 @@ int main()
     perevod(mass, opz);
     cout << endl << "Обратная польская запись: " << opz << endl;
 
-    // Находим все использованные буквы
-    for (int i = 0; opz[i] != '\0'; i++) {
+    for (int i = 0; opz[i] != '\0'; i++) 
+    {
         if (opz[i] >= 'a' && opz[i] <= 'z') 
             used[opz[i] - 'a'] = true;
     }
 
     // Запрашиваем значени
-    for (int i = 0; i < 26; i++) {
+    for (int i = 0; i < 26; i++)
+    {
         if (used[i]) {
             char letter = 'a' + i;
-            cout << "Введите значение " << letter << ": ";
+            cout << "Введите " << letter << ": ";
             while (!(cin >> values[i])) {
                 cout << "Ошибка! Введите число: ";
                 cin.clear();
@@ -195,6 +211,7 @@ int main()
 
     cout << "Результат: " << calc(opz) << endl;
 
-
+    Del_All(&start);
+    Del_All2(&start1);
     return 0;
 }
